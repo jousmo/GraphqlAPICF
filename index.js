@@ -27,6 +27,11 @@ const schema = buildSchema(`
     "Return One Course by ID"
     getCourse(id: ID!): Course
   }
+
+  type Mutation {
+    "Create One Course"
+    createCourse(title: String!, views: Int!): Course
+  }
 `)
 
 // Definimos los resolvers de mi Schema
@@ -39,6 +44,15 @@ const resolvers = {
     const { id } = args
     const course = courses.find(course => course.id === +id)
     return course
+  },
+
+  createCourse (args) {
+    const { title, views } = args
+
+    const id = courses.length + 1
+    const newCourse = { id, title, views }
+    courses.push(newCourse)
+    return newCourse
   }
 }
 

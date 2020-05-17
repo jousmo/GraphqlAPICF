@@ -81,3 +81,15 @@ query GetCourseByID($id: ID!) {
 ```
 
 ### Mutations
+
+#### Crear un nuevo curso
+
+```graphql
+mutation {
+  createCourse(title: "Angular JS", views: 200) {
+    id
+    title
+    views
+  }
+}
+```
