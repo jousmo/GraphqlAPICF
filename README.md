@@ -52,4 +52,32 @@ Este es un proyecto paso a paso de como configurar un Server de Graphql con Expr
 }
 ```
 
+#### Mostramos un curso dado un ID
+
+```graphql
+{
+  getCourse(id: "1"){
+    id
+    title
+    views
+  }
+}
+```
+
+#### Mostramos un curso dado un ID pasado por variable
+
+```graphql
+query GetCourseByID($id: ID!) {
+  getCourse(id: $id) {
+    id
+    title
+    views
+  }
+}
+
+{
+  "id": 1
+}
+```
+
 ### Mutations

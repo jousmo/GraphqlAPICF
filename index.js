@@ -24,6 +24,8 @@ const schema = buildSchema(`
   type Query {
     "Return Array List Of Courses"
     getCourses: [Course]
+    "Return One Course by ID"
+    getCourse(id: ID!): Course
   }
 `)
 
@@ -31,6 +33,12 @@ const schema = buildSchema(`
 const resolvers = {
   getCourses () {
     return courses
+  },
+
+  getCourse (args) {
+    const { id } = args
+    const course = courses.find(course => course.id === +id)
+    return course
   }
 }
 
