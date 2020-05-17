@@ -86,7 +86,10 @@ query GetCourseByID($id: ID!) {
 
 ```graphql
 mutation {
-  createCourse(title: "Angular JS", views: 200) {
+  createCourse(input: {
+    title: "Ay Cabron"
+    views: 100000
+  }) {
     id
     title
     views
@@ -98,7 +101,9 @@ mutation {
 
 ```graphql
 mutation {
-  editCourse(id: "1", title: "ReactJS", views: 3000) {
+  editCourse(id: "1", input: {
+    title: "React JS"
+  }) {
     id
     title
     views

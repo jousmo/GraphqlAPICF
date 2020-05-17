@@ -18,7 +18,7 @@ const schema = buildSchema(`
   type Course {
     id: ID!
     title: String!
-    views: Int!
+    views: Int
   }
 
   type Query {
@@ -28,11 +28,21 @@ const schema = buildSchema(`
     getCourse(id: ID!): Course
   }
 
+  input CourseInput {
+    title: String!
+    views: Int
+  }
+
+  input CourseEditInput {
+    title: String
+    views: Int
+  }
+
   type Mutation {
     "Create One Course"
-    createCourse(title: String!, views: Int!): Course
+    createCourse(input: CourseInput!): Course
     "Edit One Course By ID"
-    editCourse(id: ID!, title: String!, views: Int!): Course
+    editCourse(id: ID!, input: CourseEditInput!): Course
   }
 `)
 
@@ -49,19 +59,19 @@ const resolvers = {
   },
 
   createCourse (args) {
-    const { title, views } = args
+    const { input } = args
 
     const id = courses.length + 1
-    const newCourse = { id, title, views }
+    const newCourse = { id, ...input }
     courses.push(newCourse)
     return newCourse
   },
 
   editCourse (args) {
-    const { id, title, views } = args
+    const { id, input } = args
     const index = courses.findIndex(course => course.id === +id)
     const course = courses[index]
-    const updatedCourse = Object.assign(course, { title, views })
+    const updatedCourse = Object.assign(course, { ...input })
     courses[index] = updatedCourse
     return updatedCourse
   }
