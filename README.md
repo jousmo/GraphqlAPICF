@@ -93,3 +93,15 @@ mutation {
   }
 }
 ```
+
+#### Actualizar un curso por ID
+
+```graphql
+mutation {
+  editCourse(id: "1", title: "ReactJS", views: 3000) {
+    id
+    title
+    views
+  }
+}
+```
