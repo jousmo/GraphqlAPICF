@@ -19,6 +19,7 @@ Este es un proyecto paso a paso de como configurar un Server de Graphql con Expr
   DB_PASSWORD=passworddeladb
   DB_HOST=localhost
   DB_PORT=27017
+  SECRET=1ZWPR324097DLHFS
 ````
 
   * Iniciar docker-compose
