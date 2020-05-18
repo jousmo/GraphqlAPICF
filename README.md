@@ -110,3 +110,11 @@ mutation {
   }
 }
 ```
+
+#### Eliminar un curso por ID
+
+```graphql
+mutation {
+  deleteCourse(id: "2")
+}
+```

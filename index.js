@@ -43,6 +43,8 @@ const schema = buildSchema(`
     createCourse(input: CourseInput!): Course
     "Edit One Course By ID"
     editCourse(id: ID!, input: CourseEditInput!): Course
+    "Delete One Course By ID"
+    deleteCourse(id: ID!): Boolean
   }
 `)
 
@@ -74,6 +76,17 @@ const resolvers = {
     const updatedCourse = Object.assign(course, { ...input })
     courses[index] = updatedCourse
     return updatedCourse
+  },
+
+  deleteCourse (args) {
+    const { id } = args
+    const index = courses.findIndex(course => course.id === +id)
+
+    if (index !== -1) {
+      courses.splice(index, 1)
+      return true
+    }
+    return false
   }
 }
 
