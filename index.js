@@ -10,7 +10,8 @@ const isDev = process.env.NODE_ENV !== 'production'
 
 const courses = [
   { id: 1, title: 'React JS Yeha', views: 1000 },
-  { id: 2, title: 'Vue JS Yeha', views: 500 }
+  { id: 2, title: 'Vue JS Yeha', views: 500 },
+  { id: 3, title: 'Angular JS Yeha', views: 100 }
 ]
 
 // Definicion Schema
@@ -23,7 +24,7 @@ const schema = buildSchema(`
 
   type Query {
     "Return Array List Of Courses"
-    getCourses: [Course]
+    getCourses(page: ID, limit: ID = 1): [Course]
     "Return One Course by ID"
     getCourse(id: ID!): Course
   }
@@ -50,7 +51,13 @@ const schema = buildSchema(`
 
 // Definimos los resolvers de mi Schema
 const resolvers = {
-  getCourses () {
+  getCourses (args) {
+    const { page, limit } = args
+    if (page) {
+      const pageCourse = courses.slice(((page - 1) * limit), (page * limit))
+      return pageCourse
+    }
+
     return courses
   },
 

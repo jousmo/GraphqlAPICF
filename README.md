@@ -80,6 +80,26 @@ query GetCourseByID($id: ID!) {
 }
 ```
 
+#### Motramos N cursos dado una paginación
+
+```graphql
+{
+  getCourses(page: 1, limit: 2){
+    id
+    title
+  }
+}
+```
+
+```graphql
+{
+  getCourses(page: 2, limit: 2){
+    id
+    title
+  }
+}
+```
+
 ### Mutations
 
 #### Crear un nuevo curso
