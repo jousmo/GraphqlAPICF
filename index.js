@@ -10,6 +10,6 @@ const schema = makeExecutableSchema({ typeDefs, resolvers })
 
 const server = new ApolloServer({ schema })
 
-server.listen().then(({ url }) => {
+server.listen().then(async ({ url }) => {
   console.log(`Server running in: ${url}`)
 })
