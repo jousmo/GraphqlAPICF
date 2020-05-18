@@ -54,6 +54,24 @@ Este es un proyecto paso a paso de como configurar un Server de Graphql con Expr
 }
 ```
 
+#### Mostrar todos los cursos con su usuario
+
+```graphql
+{
+  getCourses{
+    id
+    title
+    views
+		user{
+      id
+      email
+      hashedPassword
+      token
+    }
+  }
+}
+```
+
 #### Mostramos un curso dado un ID
 
 ```graphql
@@ -102,16 +120,45 @@ query GetCourseByID($id: ID!) {
 }
 ```
 
+#### Mostrar los usuarios con sus cursos
+
+```graphql
+{
+  getUsers{
+    id
+    email
+ 		courses{
+      id
+      title
+    }
+  }
+}
+```
+
 ### Mutations
+
+#### Crear un usuario
+```graphql
+mutation{
+  signUp(input: {
+    email: "usuario"
+    hashedPassword: "aaa"
+    token: "zzz"
+  }) {
+    id
+    email
+  }
+}
+```
 
 #### Crear un nuevo curso
 
 ```graphql
 mutation {
   createCourse(input: {
-    title: "Ay Cabron"
-    views: 100000
-  }) {
+    title: "RectJS"
+    views: 1000
+  }, user: "5ec2b61b6dbfc08fd4361f5b"){
     id
     title
     views
