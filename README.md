@@ -141,12 +141,27 @@ query GetCourseByID($id: ID!) {
 ```graphql
 mutation{
   signUp(input: {
-    email: "usuario"
-    hashedPassword: "aaa"
-    token: "zzz"
+    email: "jousmo@outlook.com"
+    password: "12345"
   }) {
     id
     email
+    hashedPassword
+  }
+}
+```
+
+### Hacer un Login
+
+```graphql
+mutation{
+  logIn(input: {
+    email: "jousmo@outlook.com"
+    password: "12345"
+  }) {
+    id
+    email
+    hashedPassword
   }
 }
 ```
