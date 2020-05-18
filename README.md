@@ -2,6 +2,8 @@
 
 Este es un proyecto paso a paso de como configurar un Server de Graphql con Express, esta API tiene como motor de base de datos Mongo DB
 
+**Actualización:** Despues del commit 98748e79b9f5aec cambiamos el Server Express por Apollo Server =)
+
 ## Requisitos
   * Node JS 12.16 LTS
   * Docker Desktop 2.3

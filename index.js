@@ -1,12 +1,8 @@
 'use strict'
 
 require('dotenv').config()
-const express = require('express')
-const graphqlHTTP = require('express-graphql')
-const { buildSchema } = require('graphql')
-const app = express()
-const port = process.env.port || 3001
-const isDev = process.env.NODE_ENV !== 'production'
+const { ApolloServer } = require('apollo-server')
+const { makeExecutableSchema } = require('graphql-tools')
 
 const courses = [
   { id: 1, title: 'React JS Yeha', views: 1000 },
@@ -14,8 +10,7 @@ const courses = [
   { id: 3, title: 'Angular JS Yeha', views: 100 }
 ]
 
-// Definicion Schema
-const schema = buildSchema(`
+const typeDefs = `
   type Course {
     id: ID!
     title: String!
@@ -47,63 +42,62 @@ const schema = buildSchema(`
     "Delete One Course By ID"
     deleteCourse(id: ID!): Boolean
   }
-`)
+`
 
-// Definimos los resolvers de mi Schema
 const resolvers = {
-  getCourses (args) {
-    const { page, limit } = args
-    if (page) {
-      const pageCourse = courses.slice(((page - 1) * limit), (page * limit))
-      return pageCourse
+  Query: {
+    getCourses (root, args) {
+      const { page, limit } = args
+      if (page) {
+        const pageCourse = courses.slice(((page - 1) * limit), (page * limit))
+        return pageCourse
+      }
+
+      return courses
+    },
+
+    getCourse (root, args) {
+      const { id } = args
+      const course = courses.find(course => course.id === +id)
+      return course
     }
-
-    return courses
   },
+  Mutation: {
+    createCourse (root, args) {
+      const { input } = args
 
-  getCourse (args) {
-    const { id } = args
-    const course = courses.find(course => course.id === +id)
-    return course
-  },
+      const id = courses.length + 1
+      const newCourse = { id, ...input }
+      courses.push(newCourse)
+      return newCourse
+    },
 
-  createCourse (args) {
-    const { input } = args
+    editCourse (root, args) {
+      const { id, input } = args
+      const index = courses.findIndex(course => course.id === +id)
+      const course = courses[index]
+      const updatedCourse = Object.assign(course, { ...input })
+      courses[index] = updatedCourse
+      return updatedCourse
+    },
 
-    const id = courses.length + 1
-    const newCourse = { id, ...input }
-    courses.push(newCourse)
-    return newCourse
-  },
+    deleteCourse (root, args) {
+      const { id } = args
+      const index = courses.findIndex(course => course.id === +id)
 
-  editCourse (args) {
-    const { id, input } = args
-    const index = courses.findIndex(course => course.id === +id)
-    const course = courses[index]
-    const updatedCourse = Object.assign(course, { ...input })
-    courses[index] = updatedCourse
-    return updatedCourse
-  },
-
-  deleteCourse (args) {
-    const { id } = args
-    const index = courses.findIndex(course => course.id === +id)
-
-    if (index !== -1) {
-      courses.splice(index, 1)
-      return true
+      if (index !== -1) {
+        courses.splice(index, 1)
+        return true
+      }
+      return false
     }
-    return false
   }
 }
 
-// Creamos el API Grahpql
-app.use('/api', graphqlHTTP({
-  schema,
-  rootValue: resolvers,
-  graphiql: isDev
-}))
+const schema = makeExecutableSchema({ typeDefs, resolvers })
 
-app.listen(port, () => {
-  isDev ? console.log(`Now browse to localhost:${port}/api`) : console.log('Server Running...')
+const server = new ApolloServer({ schema })
+
+server.listen().then(({ url }) => {
+  console.log(`Server running in: ${url}`)
 })
